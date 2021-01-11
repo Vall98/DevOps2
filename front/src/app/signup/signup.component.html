@@ -1,0 +1,14 @@
+<div>
+  <a>{{err}}</a><br/>
+  <form #form="ngForm" (ngSubmit)="signup()">
+    <ion-input type="text" name="user" placeholder="Username" [(ngModel)]="username" required></ion-input>
+    <ion-input type="text" name="email" placeholder="Email" [(ngModel)]="email" required></ion-input>
+    <ion-input type="password" name="pass" placeholder="Password" [(ngModel)]="password" required></ion-input>
+    <ion-input type="password" name="pass2" placeholder="Password check" [(ngModel)]="passcheck" required></ion-input>
+    <ion-button [disabled]="form.invalid" type="submit" block>Sign up</ion-button>
+  </form>
+  <p>
+      Already registered ? - 
+    <a class="pointer" (click)="signin()">Sign in</a>
+  </p>
+</div>

@@ -1,0 +1,51 @@
+<ion-menu side="end" menuId="menu" contentId="main-router">
+  <ion-content>
+    <h1 class="title">HubbleNews</h1>
+    <div class="signin" *ngIf="!userService.connected">
+      <ion-button fill="outline" style="margin: auto;" (click)="signin()">Sign in</ion-button>
+    </div>
+    <div *ngIf="userService.connected" style="width: 85%; margin: auto;">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="4">
+            <ion-avatar class="avatar">
+              <img [src]="userService.user.img">
+            </ion-avatar>
+          </ion-col>
+          <ion-col size="8">
+            <div class="profile-container">
+              <div class="center-profile">
+                {{userService.user.username}}
+                <p style="margin-top: 5px;">
+                  <a class="pointer" routerLink="/profile" (click)="menu.close()">See profile</a>
+                </p>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <a class="pointer logout" (click)="userService.logout()">Logout</a>
+    </div>
+    <ion-range pin="true" min="0" max="100" color="secondary" [(ngModel)]="music" (ionChange)="musicChange()">
+      <ion-label slot="start">Music</ion-label>
+      <ion-label slot="start">0</ion-label>
+      <ion-label slot="end">100</ion-label>
+    </ion-range>
+    <ion-range pin="true" min="0" max="100" color="secondary" [(ngModel)]="speakerVolume" (ionChange)="speakerVolumeChange()">
+      <ion-label slot="start">Speaker</ion-label>
+      <ion-label slot="start">0</ion-label>
+      <ion-label slot="end">100</ion-label>
+    </ion-range>
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Speaker's voice</ion-label>
+      </ion-list-header>
+      <ion-item *ngIf="ttsService.voices && ttsService.voices.length > 0">
+        <ion-select interface="action-sheet" [value]="ttsService.voice" okText="Select" cancelText="Dismiss" [(ngModel)]="ttsService.voice">
+          <ion-select-option *ngFor="let v of ttsService.voices; let i = index" [value]="i">{{v.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    
+    </ion-list>
+  </ion-content>
+</ion-menu>
