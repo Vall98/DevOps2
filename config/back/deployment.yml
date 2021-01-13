@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-deployment
+  labels:
+    app: back
+spec:
+  replicas: 3
+  selector:
+    matchlabels:
+      app: back
