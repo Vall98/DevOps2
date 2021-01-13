@@ -22,8 +22,8 @@ spec:
         volumeMounts:
         - mountPath: /usr/share/nginx/html
           name: front-volume
-      volules:
+      volumes:
       - name: front-volume
-        hostPath:
-          path: front/www
-          type: Directory
+        gcePersistentDisk:
+        pdName: data-disk
+        fsType: ext4
