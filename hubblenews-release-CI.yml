@@ -30,12 +30,16 @@ stages:
             ionic capacitor sync
             ls
 
-  - stage: Build_Deploy_Nginx_Image
-    displayName: Build and Deploy Nginx Image
-    jobs:
-    - job: Build
+#  - stage: Build_Deploy_Nginx_Image
+#    displayName: Build and Deploy Nginx Image
+#    jobs:
+    - job: BuildImage
       displayName: 'Build Image'
       steps:
+      - script: |
+            set -e
+            pwd
+            ls
       - task: Docker@0
         displayName: 'Build image'
         inputs:
