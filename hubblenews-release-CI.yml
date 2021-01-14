@@ -14,16 +14,16 @@ variables:
 stages:
   - stage: Build front ressources
     displayName: Build front ressources
-      jobs:
-      - job: Build
-        displayName: 'Build Ionic'
-        steps:
-          - task: Npm@1
-            displayName: 'npm install'
-            inputs:
-              command: install
-              workingDir: '$(System.DefaultWorkingDirectory)/front'
-          - script: |
+    jobs:
+    - job: Build
+      displayName: 'Build Ionic'
+      steps:
+        - task: Npm@1
+          displayName: 'npm install'
+          inputs:
+            command: install
+            workingDir: '$(System.DefaultWorkingDirectory)/front'
+        - script: |
             set -e
             cd front/
             ionic capacitor sync
