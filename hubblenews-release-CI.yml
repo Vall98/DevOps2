@@ -1,0 +1,52 @@
+pr:
+- master
+
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  BuildConfiguration: 'Release'
+  registryConnection: 'hubblenews-gcr'
+  DockerImageName: 'devops2-301412/nginx'
+
+stages:
+  - stage: Build front ressources
+    displayName: Build front ressources
+      jobs:
+      - job: Build
+        displayName: 'Build Ionic'
+        steps:
+          - task: Npm@1
+            displayName: 'npm install'
+            inputs:
+              command: install
+              workingDir: '$(System.DefaultWorkingDirectory)/front'
+          - script: |
+            set -e
+            cd front/
+            ionic capacitor sync
+
+  - stage: Build and Deploy Nginx Image
+    displayName: Build and Deploy Nginx Image
+    jobs:
+    - job: Build
+      displayName: 'Build Image'
+      steps:
+      - task: Docker@0
+        displayName: 'Build image'
+        inputs:
+          containerregistrytype: 'Container Registry'
+          dockerRegistryConnection: '$(registryConnection)'
+          imageName: '$(DockerImageName):$(Build.BuildId)'
+    - job: Deploy
+      displayName: 'Deploy Image'
+      steps:
+      - task: Docker@0
+        displayName: 'Publish image'
+        inputs:
+          containerregistrytype: 'Container Registry'
+          dockerRegistryConnection: '$(registryConnection)'
+          action: 'Push an image'
+          imageName: '$(DockerImageName):$(Build.BuildId)'
