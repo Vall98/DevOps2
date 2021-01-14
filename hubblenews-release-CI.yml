@@ -12,7 +12,7 @@ variables:
   DockerImageName: 'devops2-301412/nginx'
 
 stages:
-  - stage: Build front ressources
+  - stage: Build_front_ressources
     displayName: Build front ressources
     jobs:
     - job: Build
@@ -28,7 +28,7 @@ stages:
             cd front/
             ionic capacitor sync
 
-  - stage: Build and Deploy Nginx Image
+  - stage: Build_Deploy_Nginx_Image
     displayName: Build and Deploy Nginx Image
     jobs:
     - job: Build
