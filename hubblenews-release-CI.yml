@@ -28,6 +28,7 @@ stages:
             cd front/
             sudo npm install -g @ionic/cli
             ionic capacitor sync
+            ls
 
   - stage: Build_Deploy_Nginx_Image
     displayName: Build and Deploy Nginx Image
