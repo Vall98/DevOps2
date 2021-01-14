@@ -26,7 +26,7 @@ stages:
         - script: |
             set -e
             cd front/
-            npm install -g ionic
+            sudo npm install -g @ionic/cli
             ionic capacitor sync
 
   - stage: Build_Deploy_Nginx_Image
