@@ -32,5 +32,5 @@ stages:
           inputs:
             command: 'buildAndPush'
             containerRegistry: '$(ContainerRegistry)'
-            Dockerfile: './config/nginx/'
+            Dockerfile: './config/nginx/Dockerfile'
             buildContext: './'
