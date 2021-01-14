@@ -7,9 +7,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  BuildConfiguration: 'Release'
-  registryConnection: 'hubblenews-gcr'
-  DockerImageName: 'devops2-301412/nginx'
+  ContainerRegistry: 'hubblenews-gcr'
 
 stages:
   - stage: Build_front_ressources
@@ -29,19 +27,10 @@ stages:
             sudo npm install -g @ionic/cli
             ionic capacitor sync
             ls
-        - task: Docker@0
+        - task: Docker@2
           displayName: 'Build image'
           inputs:
-            containerregistrytype: 'Container Registry'
-            dockerRegistryConnection: '$(registryConnection)'
-            imageName: '$(DockerImageName):$(Build.BuildId)'
-    - job: Deploy
-      displayName: 'Deploy Image'
-      steps:
-      - task: Docker@0
-        displayName: 'Publish image'
-        inputs:
-          containerregistrytype: 'Container Registry'
-          dockerRegistryConnection: '$(registryConnection)'
-          action: 'Push an image'
-          imageName: '$(DockerImageName):$(Build.BuildId)'
+            command: 'buildAndPush'
+            containerRegistry: '$(ContainerRegistry)'
+            Dockerfile: './config/nginx/'
+            buildContext: './'
