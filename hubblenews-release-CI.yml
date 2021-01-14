@@ -35,4 +35,4 @@ stages:
             containerRegistry: '$(ContainerRegistry)'
             Dockerfile: './config/nginx/Dockerfile'
             buildContext: './'
-            repository: ${project_id}/nginx
+            repository: $(project_id)/nginx
