@@ -34,4 +34,4 @@ stages:
             containerRegistry: '$(ContainerRegistry)'
             Dockerfile: './config/nginx/Dockerfile'
             buildContext: './'
-            repository: nginx
+            repository: eu.gcr.io/nginx
