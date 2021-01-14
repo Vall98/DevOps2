@@ -26,6 +26,7 @@ stages:
           - script: |
             set -e
             cd front/
+            npm install -g ionic
             ionic capacitor sync
 
   - stage: Build and Deploy Nginx Image
