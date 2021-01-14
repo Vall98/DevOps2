@@ -8,6 +8,7 @@ pool:
 
 variables:
   ContainerRegistry: 'hubblenews-gcr'
+  project_id: 'devops2-301412'
 
 stages:
   - stage: Build_front_ressources
@@ -34,4 +35,4 @@ stages:
             containerRegistry: '$(ContainerRegistry)'
             Dockerfile: './config/nginx/Dockerfile'
             buildContext: './'
-            repository: eu.gcr.io/nginx
+            repository: ${project_id}/nginx
