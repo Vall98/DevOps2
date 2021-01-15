@@ -1,3 +1,71 @@
+### INGRESS
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: hubblenews-ip
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    http:
+      paths:
+        - path: /images
+        pathType: Prefix
+        backend:
+          service:
+            name: images
+            port:
+              number: 80
+        - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api
+            port:
+              number: 8000
+        - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              number: 80
+
+---
+### SERVICE - IMAGE
+apiVersion: v1
+kind: Service
+metadata:
+  name: images
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: images
+  type: NodePort
+
+---
+### SERVICE - API
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+spec:
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: api
+  type: NodePort
+
+---
+### SERVICE - NGINX
 apiVersion: v1
 kind: Service
 metadata:
@@ -13,16 +81,70 @@ spec:
   type: NodePort
 
 ---
-apiVersion: extensions/v1beta1
-kind: Ingress
+### STATEFULSET - IMAGE
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
-  name: nginx
+  name: images-statefulset
 spec:
-  backend:
-    serviceName: nginx
-    servicePort: 80
+  selector:
+    matchLabels:
+      app: images
+  serviceName: "images-service"
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: images
+    spec:
+      containers:
+      - name: images
+        image: IMAGES_IMAGE
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: hubblevolume
+          mountPath: /home/images
+  volumeClaimTemplates:
+  - metadata:
+      name: hubblevolume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 5Gi
 
 ---
+### DEPLOYEMENT - API
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+  labels:
+    app: api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: API_IMAGE
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: hubblevolume
+          mountPath: /home/images
+
+---
+### DEPLOYEMENT - NGINX
 apiVersion: apps/v1
 kind: Deployment
 metadata:
