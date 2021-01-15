@@ -25,7 +25,7 @@ stages:
             workingDir: '$(System.DefaultWorkingDirectory)/front'
         - script: |
             set -e
-            sed -i "/NGINX_IMAGE/c\$(nginx_image):$(Build.BuildId)" config/deployment.yml
+            sed -i "s/NGINX_IMAGE/$(nginx_image):$(Build.BuildId)/g" config/deployment.yml
             cd front/
             sudo npm install -g @ionic/cli
             ionic capacitor sync
