@@ -9,6 +9,7 @@ pool:
 variables:
   ContainerRegistry: 'hubblenews-gcr'
   project_id: 'devops2-301412'
+  nginx_image_tag: 'eu.gcr.io\/$(project_id)\/nginx:$(Build.BuildId)'
 
 stages:
   - stage: Build_front_ressources
@@ -24,10 +25,10 @@ stages:
             workingDir: '$(System.DefaultWorkingDirectory)/front'
         - script: |
             set -e
+            sed -i 's/NGINX_IMAGE/$(nginx_image_tag)/g' config/deployment.yml
             cd front/
             sudo npm install -g @ionic/cli
             ionic capacitor sync
-            ls
         - task: Docker@2
           displayName: 'Build image'
           inputs:
@@ -36,18 +37,17 @@ stages:
             Dockerfile: './config/nginx/Dockerfile'
             buildContext: './'
             repository: $(project_id)/nginx
+            tags: $(Build.BuildId)
         - script: |
             set -e
             mkdir -p drop/
-            cp config/deployment drop/
+            cp config/deployment.yml drop/
           displayName: Prepare files for Archive
-        - task: ArchiveFiles@2
-          displayName: 'Archive API files'
+        - task: CopyFiles@2
           inputs:
-            rootFolderOrFile: '$(System.DefaultWorkingDirectory)/drop'
-            includeRootFolder: false
-            archiveType: zip
-            archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-            replaceExistingArchive: true
-        - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-          artifact: drop
+            contents: 'drop/**'
+            targetFolder: $(Build.ArtifactStagingDirectory)
+        - task: PublishBuildArtifacts@1
+          inputs:
+            pathToPublish: $(Build.ArtifactStagingDirectory)/drop
+            artifactName: drop
