@@ -40,7 +40,7 @@ stages:
             set -e
             mkdir -p drop/
             cp config/deployment drop/
-        displayName: Prepare files for Archive
+          displayName: Prepare files for Archive
         - task: ArchiveFiles@2
           displayName: 'Archive API files'
           inputs:
