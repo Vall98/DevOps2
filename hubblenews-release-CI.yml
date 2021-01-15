@@ -9,7 +9,7 @@ pool:
 variables:
   ContainerRegistry: 'hubblenews-gcr'
   project_id: 'devops2-301412'
-  nginx_image: eu.gcr.io/devops2-301412/nginx
+  nginx_image_tag: 'eu.gcr.io\/$(project_id)\/nginx:$(Build.BuildId)'
 
 stages:
   - stage: Build_front_ressources
@@ -25,7 +25,7 @@ stages:
             workingDir: '$(System.DefaultWorkingDirectory)/front'
         - script: |
             set -e
-            sed -i "s/NGINX_IMAGE/$(nginx_image):$(Build.BuildId)/g" config/deployment.yml
+            sed -i 's/NGINX_IMAGE/$(nginx_image_tag)/g' config/deployment.yml
             cd front/
             sudo npm install -g @ionic/cli
             ionic capacitor sync
