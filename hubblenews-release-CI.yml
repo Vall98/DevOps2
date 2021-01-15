@@ -43,7 +43,7 @@ stages:
           displayName: Prepare files for Archive
         - task: CopyFiles@2
           inputs:
-            contents: 'drop/**'
+            contents: 'drop/*'
             targetFolder: $(Build.ArtifactStagingDirectory)
         - task: PublishBuildArtifacts@1
           inputs:
