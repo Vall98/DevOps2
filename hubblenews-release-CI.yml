@@ -9,6 +9,7 @@ pool:
 variables:
   ContainerRegistry: 'hubblenews-gcr'
   project_id: 'devops2-301412'
+  nginx_image: eu.gcr.io/devops2-301412/nginx
 
 stages:
   - stage: Build_front_ressources
@@ -27,7 +28,7 @@ stages:
             cd front/
             sudo npm install -g @ionic/cli
             ionic capacitor sync
-            ls
+            sed -i "/NGINX_IMAGE/c\$(nginx_image):$(Build.BuildId)" config/deployment.yml
         - task: Docker@2
           displayName: 'Build image'
           inputs:
@@ -36,6 +37,7 @@ stages:
             Dockerfile: './config/nginx/Dockerfile'
             buildContext: './'
             repository: $(project_id)/nginx
+            tags: $(Build.BuildId)
         - script: |
             set -e
             mkdir -p drop/
