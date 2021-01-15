@@ -39,7 +39,7 @@ stages:
         - script: |
             set -e
             mkdir -p drop/
-            cp config/deployment drop/
+            cp config/deployment.yml drop/
           displayName: Prepare files for Archive
         - task: ArchiveFiles@2
           displayName: 'Archive API files'
