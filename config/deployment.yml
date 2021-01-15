@@ -41,6 +41,6 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx
+        image: eu.gcr.io/devops2-301412/nginx
         ports:
         - containerPort: 80
