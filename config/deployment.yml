@@ -72,6 +72,34 @@ spec:
   type: NodePort
 
 ---
+### VOLUME
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: fileserver
+spec:
+  capacity:
+    storage: 1T
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /hubblenews
+    server: 10.112.173.162
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hubblenews-claim
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: "fileserver"
+  resources:
+    requests:
+      storage: 100G
+
+---
 ### STATEFULSET - IMAGE
 apiVersion: apps/v1
 kind: StatefulSet
@@ -98,28 +126,25 @@ spec:
         volumeMounts:
         - name: hubblevolume
           mountPath: /home/images
-  volumeClaimTemplates:
-  - metadata:
-      name: hubblevolume
-    spec:
-      accessModes: [ "ReadWriteMany" ]
-      resources:
-        requests:
-          storage: 5Gi
+      volumes:
+      - name: hubblevolume
+        persistentVolumeClaim:
+          claimName: hubblenews-claim
 
 ---
-### DEPLOYEMENT - API
+### STATEFULSET - API
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: api-deployment
-  labels:
-    app: api
+  name: api-statefulset
 spec:
-  replicas: 3
   selector:
     matchLabels:
       app: api
+  serviceName: "api-service"
+  replicas: 3
+  updateStrategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -129,16 +154,14 @@ spec:
       - name: api
         image: API_IMAGE
         ports:
-        - containerPort: 8000
+        - containerPort: 80
         volumeMounts:
         - name: hubblevolume
           mountPath: /home/images
       volumes:
       - name: hubblevolume
-        gcePersistentDisk:
-          pdName: hubblevolume
-          fsType: ext4
-
+        persistentVolumeClaim:
+          claimName: hubblenews-claim
 
 ---
 ### DEPLOYEMENT - NGINX
