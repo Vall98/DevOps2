@@ -11,26 +11,17 @@ spec:
   - http:
       paths:
       - path: /images
-        pathType: Prefix
         backend:
-          service:
-            name: images
-            port:
-              number: 80
+          serviceName: images
+          servicePort: 80
       - path: /api
-        pathType: Prefix
         backend:
-          service:
-            name: api
-            port:
-              number: 8000
+          serviceName: api
+          servicePort: 8000
       - path: /
-        pathType: Prefix
         backend:
-          service:
-            name: nginx
-            port:
-              number: 80
+          serviceName: nginx
+          servicePort: 80
 
 ---
 ### SERVICE - IMAGE
