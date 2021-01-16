@@ -98,14 +98,11 @@ spec:
         volumeMounts:
         - name: hubblevolume
           mountPath: /home/images
-  volumeClaimTemplates:
-  - metadata:
-      name: hubblevolume
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 5Gi
+  volumes:
+  - name: hubblevolume
+    gcePersistentDisk:
+      pdName: hubblenews-disk
+      fsType: ext4
 
 ---
 ### DEPLOYEMENT - API
@@ -133,14 +130,12 @@ spec:
         volumeMounts:
         - name: hubblevolume
           mountPath: /home/images
-  volumeClaimTemplates:
-  - metadata:
-      name: hubblevolume
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 5Gi
+  volumes:
+  - name: hubblevolume
+    gcePersistentDisk:
+      pdName: hubblenews-disk
+      fsType: ext4
+
 
 ---
 ### DEPLOYEMENT - NGINX
