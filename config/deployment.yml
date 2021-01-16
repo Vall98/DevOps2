@@ -82,6 +82,7 @@ spec:
     storage: 1T
   accessModes:
   - ReadWriteMany
+  storageClassName: ""
   nfs:
     path: /hubblenews
     server: 10.112.173.162
@@ -94,7 +95,7 @@ metadata:
 spec:
   accessModes:
   - ReadWriteMany
-  storageClassName: "fileserver"
+  storageClassName: ""
   resources:
     requests:
       storage: 100G
