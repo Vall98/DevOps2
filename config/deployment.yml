@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: nginx
+  name: hubblenews
   annotations:
     kubernetes.io/ingress.global-static-ip-name: hubblenews-ip
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -133,6 +133,14 @@ spec:
         volumeMounts:
         - name: hubblevolume
           mountPath: /home/images
+  volumeClaimTemplates:
+  - metadata:
+      name: hubblevolume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 5Gi
 
 ---
 ### DEPLOYEMENT - NGINX
