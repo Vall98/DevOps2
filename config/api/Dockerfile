@@ -9,7 +9,9 @@ RUN apt -y update &&\
 RUN mkdir -p /home/api &&\
  useradd api &&\
  chown -R api:api /home/api &&\
- chown -R api:api /home/api
+ chown -R api:api /home/api &&\
+ cd /home/api/passport/secrets &&\
+ openssl rsa -in id_rsa_priv.pem -pubout -outform PEM -out id_rsa_pub.pem
 
 USER api
 
