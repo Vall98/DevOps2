@@ -75,7 +75,7 @@ spec:
   type: NodePort
 
 ---
-### VOLUME
+### VOLUMES
 apiVersion: v1
 kind: PersistentVolume
 metadata:
