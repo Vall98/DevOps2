@@ -1,10 +1,9 @@
-FROM node:14-slim
+FROM node:14
 
 COPY ./api /home/api
 
 RUN apt -y update &&\
  apt -y upgrade &&\
- apt -y install openssl openssl-client &&\
  npm i -g npm@latest
 
 RUN mkdir -p /home/api &&\
