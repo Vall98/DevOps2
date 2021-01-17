@@ -4,7 +4,7 @@ COPY ./api /home/api
 
 RUN apt -y update &&\
  apt -y upgrade &&\
- apt -y install openssl ssh-keygen &&\
+ apt -y install openssl &&\
  npm i -g npm@latest
 
 RUN mkdir -p /home/api &&\
