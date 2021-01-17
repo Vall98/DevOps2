@@ -10,18 +10,15 @@ spec:
   rules:
   - http:
       paths:
-      - path: /images
-        pathType: Exact
+      - path: /images/*
         backend:
           serviceName: images
           servicePort: 80
-      - path: /api
-        pathType: Exact
+      - path: /api/*
         backend:
           serviceName: api
           servicePort: 80
-      - path: /
-        pathType: Prefix
+      - path: /*
         backend:
           serviceName: nginx
           servicePort: 80
@@ -102,6 +99,19 @@ spec:
   resources:
     requests:
       storage: 100G
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hubblenews-app-claim
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 10G
 
 ---
 ### STATEFULSET - IMAGE
@@ -190,3 +200,10 @@ spec:
         image: NGINX_IMAGE
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: hubblevolume-app
+          mountPath: /home/app
+      volumes:
+      - name: hubblevolume-app
+        persistentVolumeClaim:
+          claimName: hubblenews-app-claim
