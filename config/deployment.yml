@@ -220,10 +220,10 @@ spec:
         image: NGINX_IMAGE
         ports:
         - containerPort: 80
-        volumeMounts:
-        - name: hubblevolume-app
-          mountPath: /home/app
-      volumes:
-      - name: hubblevolume-app
-        persistentVolumeClaim:
-          claimName: hubblenews-app-claim
+      #   volumeMounts:
+      #   - name: hubblevolume-app
+      #     mountPath: /home/app
+      # volumes:
+      # - name: hubblevolume-app
+      #   persistentVolumeClaim:
+      #     claimName: hubblenews-app-claim
