@@ -10,17 +10,17 @@ spec:
   rules:
   - http:
       paths:
-      - path: /images/
+      - path: /*
+        backend:
+          serviceName: nginx
+          servicePort: 80
+      - path: /images
         backend:
           serviceName: images
           servicePort: 80
-      - path: /api/
+      - path: /api
         backend:
           serviceName: api
-          servicePort: 80
-      - path: /
-        backend:
-          serviceName: nginx
           servicePort: 80
 
 ---
@@ -152,8 +152,8 @@ spec:
       containers:
       - name: images
         image: IMAGES_IMAGE
-        ports:
-        - containerPort: 80
+        # ports:
+        # - containerPort: 80
         volumeMounts:
         - name: hubblevolume
           mountPath: /home/images
@@ -218,8 +218,8 @@ spec:
       containers:
       - name: nginx
         image: NGINX_IMAGE
-        ports:
-        - containerPort: 80
+        # ports:
+        # - containerPort: 80
       #   volumeMounts:
       #   - name: hubblevolume-app
       #     mountPath: /home/app
