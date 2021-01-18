@@ -10,15 +10,15 @@ spec:
   rules:
   - http:
       paths:
-      - path: /images/*
+      - path: /images/
         backend:
           serviceName: images
           servicePort: 80
-      - path: /api/*
+      - path: /api/
         backend:
           serviceName: api
           servicePort: 80
-      - path: /*
+      - path: /
         backend:
           serviceName: nginx
           servicePort: 80
@@ -96,6 +96,7 @@ spec:
   accessModes:
   - ReadWriteMany
   storageClassName: ""
+  volumeName: fileserver
   resources:
     requests:
       storage: 100G
@@ -109,6 +110,7 @@ spec:
   accessModes:
   - ReadWriteMany
   storageClassName: ""
+  volumeName: fileserver
   resources:
     requests:
       storage: 10G
