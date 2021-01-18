@@ -172,6 +172,9 @@ spec:
         volumeMounts:
         - name: hubblevolume
           mountPath: /home/images
+        env:
+        - name: API_PORT
+          value: "8000"
       volumes:
       - name: hubblevolume
         persistentVolumeClaim:
