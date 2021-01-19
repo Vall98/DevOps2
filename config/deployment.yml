@@ -80,62 +80,31 @@ spec:
 
 ---
 ### VOLUMES
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: fileserver
-# spec:
-#   capacity:
-#     storage: 100G
-#   accessModes:
-#   - ReadWriteMany
-#   storageClassName: ""
-#   nfs:
-#     path: /hubblenews
-#     server: 10.112.173.162
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hubblenews-claim
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: "rook-ceph-block"
+  resources:
+    requests:
+      storage: 50G
 
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: hubblenews-claim
-# spec:
-#   accessModes:
-#   - ReadWriteMany
-#   storageClassName: ""
-#   volumeName: fileserver
-#   resources:
-#     requests:
-#       storage: 100G
-
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: fileserver-app
-# spec:
-#   capacity:
-#     storage: 100G
-#   accessModes:
-#   - ReadWriteMany
-#   storageClassName: ""
-#   nfs:
-#     path: /hubblenews-app
-#     server: 10.112.173.162
-
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: hubblenews-app-claim
-# spec:
-#   accessModes:
-#   - ReadWriteMany
-#   storageClassName: ""
-#   volumeName: fileserver-app
-#   resources:
-#     requests:
-#       storage: 100G
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hubblenews-app-claim
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: "rook-ceph-block"
+  volumeName: fileserver-app
+  resources:
+    requests:
+      storage: 10G
 
 ---
 ### STATEFULSET - IMAGE
