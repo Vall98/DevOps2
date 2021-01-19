@@ -1,3 +1,10 @@
+### NAMESPACES
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: rook-ceph
+
+---
 ### INGRESS
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
@@ -5,7 +12,7 @@ metadata:
   name: hubblenews
   annotations:
     kubernetes.io/ingress.global-static-ip-name: hubblenews-ip
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    # nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - http:
@@ -73,33 +80,33 @@ spec:
 
 ---
 ### VOLUMES
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: fileserver
-spec:
-  capacity:
-    storage: 100G
-  accessModes:
-  - ReadWriteMany
-  storageClassName: ""
-  nfs:
-    path: /hubblenews
-    server: 10.112.173.162
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: fileserver
+# spec:
+#   capacity:
+#     storage: 100G
+#   accessModes:
+#   - ReadWriteMany
+#   storageClassName: ""
+#   nfs:
+#     path: /hubblenews
+#     server: 10.112.173.162
 
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: hubblenews-claim
-spec:
-  accessModes:
-  - ReadWriteMany
-  storageClassName: ""
-  volumeName: fileserver
-  resources:
-    requests:
-      storage: 100G
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: hubblenews-claim
+# spec:
+#   accessModes:
+#   - ReadWriteMany
+#   storageClassName: ""
+#   volumeName: fileserver
+#   resources:
+#     requests:
+#       storage: 100G
 
 # ---
 # apiVersion: v1
@@ -108,7 +115,7 @@ spec:
 #   name: fileserver-app
 # spec:
 #   capacity:
-#     storage: 10G
+#     storage: 100G
 #   accessModes:
 #   - ReadWriteMany
 #   storageClassName: ""
@@ -128,7 +135,7 @@ spec:
 #   volumeName: fileserver-app
 #   resources:
 #     requests:
-#       storage: 10G
+#       storage: 100G
 
 ---
 ### STATEFULSET - IMAGE
@@ -154,13 +161,13 @@ spec:
         image: IMAGES_IMAGE
         # ports:
         # - containerPort: 80
-        volumeMounts:
-        - name: hubblevolume
-          mountPath: /home/images
-      volumes:
-      - name: hubblevolume
-        persistentVolumeClaim:
-          claimName: hubblenews-claim
+      #   volumeMounts:
+      #   - name: hubblevolume
+      #     mountPath: /home/images
+      # volumes:
+      # - name: hubblevolume
+      #   persistentVolumeClaim:
+      #     claimName: hubblenews-claim
 
 ---
 ### STATEFULSET - API
@@ -186,16 +193,16 @@ spec:
         image: API_IMAGE
         ports:
         - containerPort: 80
-        volumeMounts:
-        - name: hubblevolume
-          mountPath: /home/images
+        # volumeMounts:
+        # - name: hubblevolume
+        #   mountPath: /home/images
         env:
         - name: API_PORT
           value: "8000"
-      volumes:
-      - name: hubblevolume
-        persistentVolumeClaim:
-          claimName: hubblenews-claim
+      # volumes:
+      # - name: hubblevolume
+      #   persistentVolumeClaim:
+      #     claimName: hubblenews-claim
 
 ---
 ### DEPLOYEMENT - NGINX
