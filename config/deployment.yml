@@ -90,7 +90,7 @@ spec:
   storageClassName: "rook-ceph-block"
   resources:
     requests:
-      storage: 50G
+      storage: 50Gi
 
 ---
 apiVersion: v1
@@ -103,7 +103,7 @@ spec:
   storageClassName: "rook-ceph-block"
   resources:
     requests:
-      storage: 10G
+      storage: 10Gi
 
 ---
 ### STATEFULSET - IMAGE
