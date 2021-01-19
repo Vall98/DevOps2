@@ -101,7 +101,6 @@ spec:
   accessModes:
   - ReadWriteMany
   storageClassName: "rook-ceph-block"
-  volumeName: fileserver-app
   resources:
     requests:
       storage: 10G
