@@ -61,6 +61,17 @@ spec:
 ---
 ### VOLUMES
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hubblenews-files
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+  - ReadWriteMany
+
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: hubblenews-claim
