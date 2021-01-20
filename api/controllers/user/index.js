@@ -1,5 +1,5 @@
 const fs = require('fs');
-var path = require('path');
+const path = require('path');
 const sign = require("../../passport/sign");
 const User = require("../../models").user;
 

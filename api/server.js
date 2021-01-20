@@ -1,4 +1,6 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
+const path = require('path');
 const bodyParser = require('body-parser');
 const router = require('./router/router');
 const models = require('./models');
@@ -15,6 +17,9 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Credentials", false);
     next();
 });
+
+const img_path = path.join(path.dirname(require.main.filename), "../images");
+app.use('/images', express.static(img_path));
 
 app.listen(process.env.API_PORT, function () {
     console.log('Server listening on port ' + process.env.API_PORT + '.');
