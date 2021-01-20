@@ -60,31 +60,32 @@ spec:
 
 ---
 ### VOLUMES
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: hubblenews-files
-# spec:
-#   capacity:
-#     storage: 50Gi
-#   accessModes:
-#   - ReadWriteMany
-#   gcePersistentDisk:
-#     fsType: "ext4"
-#     pdName: "disk-1"
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hubblenews-files
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 50Gi
+  accessModes:
+  - ReadWriteOnce
+  gcePersistentDisk:
+    fsType: ext4
+    pdName: disk-1
 
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: hubblenews-claim
-# spec:
-#   accessModes:
-#   - ReadWriteOnce
-#   storageClassName: ""
-#   resources:
-#     requests:
-#       storage: 50Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hubblenews-claim
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 50Gi
 
 ---
 ### STATEFULSET - API
@@ -118,10 +119,8 @@ spec:
           value: "8000"
       volumes:
       - name: hubblevolume
-        gcePersistentDisk:
-          pdName: disk-1
-          fsType: ext4
-
+        persistentVolumeClaim:
+          claimName: hubblenews-claim
 ---
 ### DEPLOYEMENT - NGINX
 apiVersion: apps/v1
@@ -131,7 +130,7 @@ metadata:
   labels:
     app: nginx
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: nginx
