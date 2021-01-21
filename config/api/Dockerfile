@@ -6,10 +6,10 @@ RUN apt -y update &&\
  apt -y upgrade &&\
  npm i -g npm@latest
 
-RUN mkdir -p /home/api &&\
+RUN mkdir -p /home/api /home/images &&\
  useradd api &&\
- chown -R api:api /home/api &&\
- chown -R api:api /home/api
+ chown -R api:api /home/api /home/images &&\
+ chown -R api:api /home/api /home/images
 
 USER api
 
