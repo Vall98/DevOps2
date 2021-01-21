@@ -71,7 +71,7 @@ metadata:
 spec:
   storageClassName: ""
   capacity:
-    storage: 20Gi
+    storage: 50Gi
   accessModes:
   - ReadWriteOnce
   gcePersistentDisk:
@@ -89,7 +89,7 @@ spec:
   storageClassName: ""
   resources:
     requests:
-      storage: 20Gi
+      storage: 50Gi
   volumeName: hubblenews-files
 
 ---
@@ -100,7 +100,7 @@ metadata:
 spec:
   storageClassName: ""
   capacity:
-    storage: 20Gi
+    storage: 50Gi
   accessModes:
   - ReadWriteOnce
   gcePersistentDisk:
@@ -118,7 +118,7 @@ spec:
   storageClassName: ""
   resources:
     requests:
-      storage: 20Gi
+      storage: 50Gi
   volumeName: hubblenews-mysql
 
 ---
