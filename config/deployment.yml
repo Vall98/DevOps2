@@ -177,9 +177,20 @@ spec:
       containers:
       - name: nginx
         image: NGINX_IMAGE
+        env:
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: username
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
 
-### STATEFULSET - MYSQL
 ---
+### STATEFULSET - MYSQL
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -199,9 +210,11 @@ spec:
       - image: mysql
         name: mysql
         env:
-          # Use secret in real usage
         - name: MYSQL_ROOT_PASSWORD
-          value: password
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
         ports:
         - containerPort: 3306
           name: mysql
