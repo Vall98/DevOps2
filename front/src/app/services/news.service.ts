@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class NewsService {
 
   constructor(private http: HttpClient) { }
 
-  url: string = "https://ts3.wondercube.fr/api/";
+  url: string = environment.apiBaseUrl;
 
   loadData(page: number): Observable<any> {
     return this.http.get(this.url + "hubblesite/news?page=" + page);

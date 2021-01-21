@@ -12,6 +12,8 @@ variables:
   images_image_tag: 'eu.gcr.io\/$(project_id)\/images:$(Build.BuildId)'
   api_image_tag: 'eu.gcr.io\/$(project_id)\/api:$(Build.BuildId)'
   nginx_image_tag: 'eu.gcr.io\/$(project_id)\/nginx:$(Build.BuildId)'
+  dev_url: '34.117.127.138'
+  prod_url: '34.117.153.185'
 
 stages:
   - stage: Build_front_ressources
@@ -30,6 +32,8 @@ stages:
             sed -i 's/IMAGES_IMAGE/$(images_image_tag)/g' config/deployment.yml
             sed -i 's/API_IMAGE/$(api_image_tag)/g' config/deployment.yml
             sed -i 's/NGINX_IMAGE/$(nginx_image_tag)/g' config/deployment.yml
+            sed -i 's/API_BASE_URL/$(dev_url)\/api\//g' front/src/environments/environments.ts
+            sed -i 's/API_BASE_URL/$(prod_url)\/api\//g' front/src/environments/environments.prod.ts
             cd front/
             sudo npm install -g @ionic/cli
             ionic capacitor sync

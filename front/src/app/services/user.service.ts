@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { share } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  url: string = "https://ts3.wondercube.fr/api/";
+  url: string = environment.apiBaseUrl;
   credentials = {};
   meObsrv: Observable<any>;
   tokenObsrv: Promise<string> = this.storage.get('hubble_token');
