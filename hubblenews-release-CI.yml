@@ -33,8 +33,8 @@ stages:
             sed -i 's/API_IMAGE/$(api_image_tag)/g' config/deployment.yml
             sed -i 's/NGINX_IMAGE/$(nginx_image_tag)/g' config/deployment.yml
             cd front/
-            sed -i 's/API_BASE_URL/$(dev_url)\/api\//g' src/environments/environment.ts
-            sed -i 's/API_BASE_URL/$(prod_url)\/api\//g' src/environments/environment.prod.ts
+            sed -i 's/API_BASE_URL/"$(dev_url)\/api\/"/g' src/environments/environment.ts
+            sed -i 's/API_BASE_URL/"$(prod_url)\/api\/"/g' src/environments/environment.prod.ts
             sudo npm install -g @ionic/cli
             ionic capacitor sync
         - task: Docker@2
