@@ -38,15 +38,6 @@ stages:
             sudo npm install -g @ionic/cli
             ionic capacitor sync
         - task: Docker@2
-          displayName: 'Build images image'
-          inputs:
-            command: 'buildAndPush'
-            containerRegistry: '$(ContainerRegistry)'
-            Dockerfile: './config/images/Dockerfile'
-            buildContext: './'
-            repository: $(project_id)/images
-            tags: $(Build.BuildId)
-        - task: Docker@2
           displayName: 'Build api image'
           inputs:
             command: 'buildAndPush'
