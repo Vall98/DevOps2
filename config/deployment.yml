@@ -50,6 +50,19 @@ spec:
   type: NodePort
 
 ---
+### SERVICE - MYSQL
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql
+  clusterIP: None
+
+---
 ### VOLUMES
 apiVersion: v1
 kind: PersistentVolume
@@ -77,6 +90,36 @@ spec:
   resources:
     requests:
       storage: 50Gi
+  volumeName: hubblenews-files
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hubblenews-mysql
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 50Gi
+  accessModes:
+  - ReadWriteOnce
+  gcePersistentDisk:
+    fsType: ext4
+    pdName: disk-2
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hubblenews-mysql-claim
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 50Gi
+  volumeName: hubblenews-mysql
 
 ---
 ### STATEFULSET - API
@@ -134,3 +177,38 @@ spec:
       containers:
       - name: nginx
         image: NGINX_IMAGE
+
+### STATEFULSET - MYSQL
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql
+        name: mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: password
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-storage
+        persistentVolumeClaim:
+          claimName: hubblenews-mysql-claim
