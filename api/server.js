@@ -19,7 +19,7 @@ app.use(function(req, res, next) {
 });
 
 const img_path = path.join(path.dirname(require.main.filename), "../images");
-app.use('/images', express.static(img_path));
+app.use('/api/images', express.static(img_path));
 
 app.listen(process.env.API_PORT, function () {
     console.log('Server listening on port ' + process.env.API_PORT + '.');
@@ -34,4 +34,4 @@ for (let db in models.sequelize) {
     });
 }
 
-app.use('/', router);
+app.use('/api', router);
