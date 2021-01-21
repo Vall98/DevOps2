@@ -19,6 +19,6 @@ CMD ssh-keygen -t rsa -b 4096 -m PEM -f /home/api/passport/secrets/id_rsa_priv.p
  openssl rsa -in /home/api/passport/secrets/id_rsa_priv.pem -pubout -outform PEM -out /home/api/passport/secrets/id_rsa_pub.pem &&\
  echo ${USERNAME} &&\
  echo ${PASSWORD} &&\
- sed -i 's/USERNAME/"$USERNAME"/g' config/config.json &&\
- sed -i 's/PASSWORD/"$PASSWORD"/g' config/config.json &&\
+ sed -i 's/USERNAME/"${USERNAME}"/g' config/config.json &&\
+ sed -i 's/PASSWORD/"${PASSWORD}"/g' config/config.json &&\
  npm i && npm audit fix --force && npm start
