@@ -5,7 +5,7 @@ metadata:
   name: hubblenews
   annotations:
     kubernetes.io/ingress.global-static-ip-name: hubblenews-ip
-    # nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   backend:
     serviceName: nginx
