@@ -7,12 +7,15 @@ metadata:
     kubernetes.io/ingress.global-static-ip-name: hubblenews-ip
     # nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  backend:
+    serviceName: nginx
+    servicePort: 80
   rules:
   - http:
       paths:
-      - path: /*
+      - path: /api
         backend:
-          serviceName: nginx
+          serviceName: api
           servicePort: 80
       - path: /api/*
         backend:
