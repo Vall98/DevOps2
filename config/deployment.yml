@@ -151,6 +151,16 @@ spec:
         env:
         - name: API_PORT
           value: "8000"
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: username
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
       volumes:
       - name: hubblevolume
         persistentVolumeClaim:
@@ -177,30 +187,21 @@ spec:
       containers:
       - name: nginx
         image: NGINX_IMAGE
-        env:
-        - name: USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: username
-        - name: PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: password
 
 ---
 ### STATEFULSET - MYSQL
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mysql
+  name: mysql-statefulset
 spec:
   selector:
     matchLabels:
       app: mysql
-  strategy:
-    type: Recreate
+  serviceName: "mysql-service"
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
