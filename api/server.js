@@ -34,4 +34,5 @@ for (let db in models.sequelize) {
     });
 }
 
+express.Router().get('/', (req, res) => res.status(200).send("Success, HubbleNews' API is running."));
 app.use('/api', router);
