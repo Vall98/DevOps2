@@ -14,7 +14,7 @@ spec:
         backend:
           serviceName: nginx
           servicePort: 80
-      - path: /api
+      - path: /api/*
         backend:
           serviceName: api
           servicePort: 80
@@ -91,7 +91,7 @@ spec:
     matchLabels:
       app: api
   serviceName: "api-service"
-  replicas: 3
+  replicas: 1
   updateStrategy:
     type: RollingUpdate
   template:
