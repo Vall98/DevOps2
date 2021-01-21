@@ -47,7 +47,7 @@ spec:
     name: http
   selector:
     app: nginx
-  type: NodePort
+  type: LoadBalancer
 
 ---
 ### SERVICE - MYSQL
