@@ -1,5 +1,5 @@
 const fs = require('fs');
-var path = require('path');
+const path = require('path');
 const sign = require("../../passport/sign");
 const User = require("../../models").user;
 
@@ -72,7 +72,7 @@ function editImage(req, res) {
         return;
     }
     req.body.ext = req.body.ext.toString().toLowerCase();
-    req.user.img = "https://ts3.wondercube.fr/images/profile/" + req.user.username + req.body.ext;
+    req.user.img = "http://34.117.127.138/api/images/profile/" + req.user.username + req.body.ext;
     const name = path.join(path.dirname(require.main.filename), "../images/profile/", req.user.username + req.body.ext);
     writeImage(name, req.body.img);
     User.update(req.user.dataValues, { where: {id: req.user.id } })
